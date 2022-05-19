@@ -35,6 +35,8 @@ var tasks = []Task{{
 
 func main() {
 	handler1 := func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(http.StatusOK)
+
 		var buf bytes.Buffer
 		enc := json.NewEncoder(&buf)
 		if err := enc.Encode(&tasks); err != nil {
