@@ -7,7 +7,10 @@ import (
 	"log"
 	"net/http"
 	"time"
+	"math/rand"
 )
+
+const DAI_KICHI_I = 0
 
 type Task struct {
 	Fortune string     `json:"fortune"`
@@ -27,7 +30,7 @@ var tasks = []Task{{
 	Fortune: "Sho-kichi",
 	DueDate: time.Now(),
 }, {
-	Fortune: "Sue-kichi",
+	Fortune: "Tue-kichi",
 	DueDate: time.Now(),
 }, {
 	Fortune: "Kyo",
@@ -38,12 +41,12 @@ var tasks = []Task{{
 }}
 
 func main() {
-	handler1 := func(w http.ResponseWriter, r *http.Request) {
+	handler := func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusOK)
 
 		var buf bytes.Buffer
 		enc := json.NewEncoder(&buf)
-		if err := enc.Encode(&tasks); err != nil {
+		if err := enc.Encode(&tasks[getIndex()]); err != nil {
 			log.Fatal(err)
 		}
 		fmt.Println(buf.String())
@@ -55,6 +58,26 @@ func main() {
 	}
 
 	// GET /tasks
-	http.HandleFunc("/", handler1)
+	http.HandleFunc("/", handler)
 	log.Fatal(http.ListenAndServe(":4242", nil))
+}
+
+func getIndex() (i int) {
+	rand.Seed(time.Now().UnixNano())
+	i = rand.Intn(len(tasks))
+
+	now := time.Now()
+	if isNewYear(now) {
+		fmt.Println("isNewYear")
+		i = DAI_KICHI_I
+	}
+	return i
+}
+
+func isNewYear(t time.Time) bool {
+	day := t.Day()
+	if int(t.Month()) == 1 && 1 <= day && day <= 3 {
+		return true
+	}
+	return false
 }
