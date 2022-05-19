@@ -10,26 +10,30 @@ import (
 )
 
 type Task struct {
-	ID      int       `json:"id"`
-	Title   string    `json:"title"`
-	Content string    `json:"content"`
+	Fortune string     `json:"fortune"`
 	DueDate time.Time `json:"due_date"`
 }
 
 var tasks = []Task{{
-	ID:      1,
-	Title:   "A",
-	Content: "Aタスク",
+	Fortune: "Dai-kichi",
 	DueDate: time.Now(),
 }, {
-	ID:      2,
-	Title:   "B",
-	Content: "Bタスク",
+	Fortune: "kichi",
 	DueDate: time.Now(),
 }, {
-	ID:      3,
-	Title:   "C",
-	Content: "Cタスク",
+	Fortune: "Chuu-kichi",
+	DueDate: time.Now(),
+}, {
+	Fortune: "Sho-kichi",
+	DueDate: time.Now(),
+}, {
+	Fortune: "Sue-kichi",
+	DueDate: time.Now(),
+}, {
+	Fortune: "Kyo",
+	DueDate: time.Now(),
+}, {
+	Fortune: "Dai-kyo",
 	DueDate: time.Now(),
 }}
 
