@@ -5,39 +5,39 @@ import (
 	"encoding/json"
 	"fmt"
 	"log"
+	"math/rand"
 	"net/http"
 	"time"
-	"math/rand"
 )
 
 const DAI_KICHI_I = 0
 
 type Task struct {
-	Fortune string     `json:"fortune"`
-	DueDate time.Time `json:"due_date"`
+	Fortune string    `json:"fortune"`
+	Date    time.Time `json:"date"`
 }
 
 var tasks = []Task{{
 	Fortune: "Dai-kichi",
-	DueDate: time.Now(),
+	Date:    time.Now(),
 }, {
 	Fortune: "kichi",
-	DueDate: time.Now(),
+	Date:    time.Now(),
 }, {
 	Fortune: "Chuu-kichi",
-	DueDate: time.Now(),
+	Date:    time.Now(),
 }, {
 	Fortune: "Sho-kichi",
-	DueDate: time.Now(),
+	Date:    time.Now(),
 }, {
 	Fortune: "Tue-kichi",
-	DueDate: time.Now(),
+	Date:    time.Now(),
 }, {
 	Fortune: "Kyo",
-	DueDate: time.Now(),
+	Date:    time.Now(),
 }, {
 	Fortune: "Dai-kyo",
-	DueDate: time.Now(),
+	Date:    time.Now(),
 }}
 
 func main() {
