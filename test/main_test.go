@@ -14,19 +14,28 @@ type TestCase struct {
 
 func TestHomeHandler(t *testing.T) {
 	newYear := time.Date(2000, time.January, 1, 0, 0, 0, 0, time.Local)
-	normal := time.Date(2000, time.January, 1, 0, 0, 0, 0, time.Local)
+	newYear2 := time.Date(2000, time.January, 3, 0, 0, 0, 0, time.Local)
+	normal := time.Date(2000, time.December, 1, 0, 0, 0, 0, time.Local)
+
 	cases := map[string]TestCase{
-		"test1": {nil},
-		"test2": {&newYear},
-		"test3": {&normal},
+		"now": {nil},
+		"newYear": {&newYear},
+		"newYear2": {&newYear2},
+		"normal": {&normal},
 	}
+
 	for _, v := range cases {
 		testRun(t, v)
 	}
 }
 
+// 質問したいこと
+// - test.helperの重要性
+// - bodyからfortuneだけを抽出する方法
+
 func testRun(t *testing.T, tc TestCase) {
-	t.Helper()
+	// t.Helper()
+
 	testServer := httptest.NewServer(http.HandlerFunc(makeHandler(homeHandler, tc.time)))
 	defer testServer.Close()
 
