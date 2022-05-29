@@ -16,7 +16,7 @@ func TestHomeHandler(t *testing.T) {
 			t.Error(err)
 	}
 
-	_, err := io.ReadAll(res.Body)
+	_, err = io.ReadAll(res.Body)
 	defer res.Body.Close()
 	if err != nil {
 			t.Error(err)
