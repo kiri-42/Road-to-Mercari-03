@@ -5,10 +5,29 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"testing"
+	"time"
 )
 
+type TestCase struct {
+	time *time.Time
+}
+
 func TestHomeHandler(t *testing.T) {
-	testServer := httptest.NewServer(http.HandlerFunc(homeHandler))
+	newYear := time.Date(2000, time.January, 1, 0, 0, 0, 0, time.Local)
+	normal := time.Date(2000, time.January, 1, 0, 0, 0, 0, time.Local)
+	cases := map[string]TestCase{
+		"test1": {nil},
+		"test2": {&newYear},
+		"test3": {&normal},
+	}
+	for _, v := range cases {
+		testRun(t, v)
+	}
+}
+
+func testRun(t *testing.T, tc TestCase) {
+	t.Helper()
+	testServer := httptest.NewServer(http.HandlerFunc(makeHandler(homeHandler, tc.time)))
 	defer testServer.Close()
 
 	res, err := http.Get(testServer.URL)

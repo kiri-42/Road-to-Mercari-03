@@ -71,7 +71,6 @@ func getIndex(t *time.Time) (i int) {
 	i = rand.Intn(len(omikujiList))
 
 	if isNewYear(t) {
-		fmt.Println("isNewYear")
 		i = DAI_KICHI_I
 	}
 	return i
