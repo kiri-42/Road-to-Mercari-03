@@ -41,16 +41,22 @@ var omikujiList = []Omikuji{{
 }}
 
 func main() {
-	http.HandleFunc("/", homeHandler)
+	http.HandleFunc("/", makeHandler(homeHandler, nil))
 	log.Fatal(http.ListenAndServe(":4242", nil))
 }
 
-func homeHandler(w http.ResponseWriter, r *http.Request) {
+func makeHandler(fn func(http.ResponseWriter, *http.Request, *time.Time), t *time.Time) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		fn(w, r, t)
+	}
+}
+
+func homeHandler(w http.ResponseWriter, r *http.Request, t *time.Time) {
 	w.WriteHeader(http.StatusOK)
 
 	var buf bytes.Buffer
 	enc := json.NewEncoder(&buf)
-	if err := enc.Encode(&omikujiList[getIndex()]); err != nil {
+	if err := enc.Encode(&omikujiList[getIndex(t)]); err != nil {
 		log.Fatal(err)
 	}
 
@@ -60,19 +66,22 @@ func homeHandler(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func getIndex() (i int) {
+func getIndex(t *time.Time) (i int) {
 	rand.Seed(time.Now().UnixNano())
 	i = rand.Intn(len(omikujiList))
 
-	now := time.Now()
-	if isNewYear(now) {
+	if isNewYear(t) {
 		fmt.Println("isNewYear")
 		i = DAI_KICHI_I
 	}
 	return i
 }
 
-func isNewYear(t time.Time) bool {
+func isNewYear(t *time.Time) bool {
+	if t == nil {
+		now := time.Now()
+		t = &now
+	}
 	day := t.Day()
 	if int(t.Month()) == 1 && 1 <= day && day <= 3 {
 		return true
