@@ -12,32 +12,32 @@ import (
 
 const DAI_KICHI_I = 0
 
-type Task struct {
-	Fortune string    `json:"fortune"`
-	Date    time.Time `json:"date"`
+type Omikuji struct {
+	Fortune string `json:"fortune"`
+	Massage string `json:"massage"`
 }
 
-var tasks = []Task{{
+var omikujiList = []Omikuji{{
 	Fortune: "Dai-kichi",
-	Date:    time.Now(),
+	Massage: "課題が一発クリア！！",
 }, {
 	Fortune: "kichi",
-	Date:    time.Now(),
+	Massage: "レビュワーにコードを褒められる",
 }, {
 	Fortune: "Chuu-kichi",
-	Date:    time.Now(),
+	Massage: "マッチングしたレビューがNetPractice",
 }, {
 	Fortune: "Sho-kichi",
-	Date:    time.Now(),
+	Massage: "よくわからんAchievementでWalletゲット",
 }, {
-	Fortune: "Tue-kichi",
-	Date:    time.Now(),
+	Fortune: "Sue-kichi",
+	Massage: "1週間後にレビューセールが",
 }, {
 	Fortune: "Kyo",
-	Date:    time.Now(),
+	Massage: "作業中のパソコンが固まる",
 }, {
 	Fortune: "Dai-kyo",
-	Date:    time.Now(),
+	Massage: "TIG",
 }}
 
 func main() {
@@ -50,7 +50,7 @@ func homeHandler(w http.ResponseWriter, r *http.Request) {
 
 	var buf bytes.Buffer
 	enc := json.NewEncoder(&buf)
-	if err := enc.Encode(&tasks[getIndex()]); err != nil {
+	if err := enc.Encode(&omikujiList[getIndex()]); err != nil {
 		log.Fatal(err)
 	}
 
@@ -62,7 +62,7 @@ func homeHandler(w http.ResponseWriter, r *http.Request) {
 
 func getIndex() (i int) {
 	rand.Seed(time.Now().UnixNano())
-	i = rand.Intn(len(tasks))
+	i = rand.Intn(len(omikujiList))
 
 	now := time.Now()
 	if isNewYear(now) {

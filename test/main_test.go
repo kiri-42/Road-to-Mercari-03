@@ -13,16 +13,16 @@ func TestHomeHandler(t *testing.T) {
 
 	res, err := http.Get(testServer.URL)
 	if err != nil {
-			t.Error(err)
+		t.Error(err)
 	}
 
 	_, err = io.ReadAll(res.Body)
 	defer res.Body.Close()
 	if err != nil {
-			t.Error(err)
+		t.Error(err)
 	}
 
 	if res.StatusCode != 200 {
-			t.Error("a response code is not 200")
+		t.Error("a response code is not 200")
 	}
 }
