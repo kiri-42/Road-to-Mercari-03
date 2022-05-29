@@ -41,23 +41,23 @@ var tasks = []Task{{
 }}
 
 func main() {
-	handler := func(w http.ResponseWriter, r *http.Request) {
-		w.WriteHeader(http.StatusOK)
+	http.HandleFunc("/", homeHandler)
+	log.Fatal(http.ListenAndServe(":4242", nil))
+}
 
-		var buf bytes.Buffer
-		enc := json.NewEncoder(&buf)
-		if err := enc.Encode(&tasks[getIndex()]); err != nil {
-			log.Fatal(err)
-		}
+func homeHandler(w http.ResponseWriter, r *http.Request) {
+	w.WriteHeader(http.StatusOK)
 
-		_, err := fmt.Fprint(w, buf.String())
-		if err != nil {
-			return
-		}
+	var buf bytes.Buffer
+	enc := json.NewEncoder(&buf)
+	if err := enc.Encode(&tasks[getIndex()]); err != nil {
+		log.Fatal(err)
 	}
 
-	http.HandleFunc("/", handler)
-	log.Fatal(http.ListenAndServe(":4242", nil))
+	_, err := fmt.Fprint(w, buf.String())
+	if err != nil {
+		return
+	}
 }
 
 func getIndex() (i int) {
