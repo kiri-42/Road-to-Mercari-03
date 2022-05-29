@@ -49,7 +49,6 @@ func main() {
 		if err := enc.Encode(&tasks[getIndex()]); err != nil {
 			log.Fatal(err)
 		}
-		fmt.Println(buf.String())
 
 		_, err := fmt.Fprint(w, buf.String())
 		if err != nil {
@@ -57,7 +56,6 @@ func main() {
 		}
 	}
 
-	// GET /tasks
 	http.HandleFunc("/", handler)
 	log.Fatal(http.ListenAndServe(":4242", nil))
 }
